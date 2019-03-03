@@ -1,0 +1,15 @@
+version: '3'
+services:
+  mysql_db:
+    image: mysql:5.7
+    container_name: mysql_db
+    privileged: true
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./conf/my.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+      - ./logs:/var/log/mysql
+    environment:
+      # 请务必修改密码
+      MYSQL_ROOT_PASSWORD: "123456"
