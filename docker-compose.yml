@@ -11,9 +11,9 @@ services:
       - 3306:3306
     volumes:
       - /etc/localhost:/etc/localhost:ro
-      - $PWD/pypimanager-mysql/data:/var/lib/mysql
-      - $PWD/pypimanager-mysql/conf/my.cnf:/etc/mysql/my.cnf
-      - $PWD/pypimanager-mysql/logs:/var/log/mysql
+      - $PWD/data:/var/lib/mysql
+      - $PWD/conf/my.cnf:/etc/mysql/my.cnf
+      - $PWD/logs:/var/log/mysql
     environment:
       # 请务必修改密码
       MYSQL_ROOT_PASSWORD: "123456"
