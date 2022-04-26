@@ -1,19 +1,29 @@
 version: '3'
 
 services:
-  mysql_db:
+  mysql:
     image: mysql:5.7
-    container_name: mysql_db
-    privileged: true
-    restart: always
+    container_name: mysql
+    restart: unless-stopped
+    networks:
+      mysql_net:
     ports:
       - 3306:3306
     volumes:
-      - /etc/localhost:/etc/localhost
-      - ./data:/var/lib/mysql
-      - ./conf/my.cnf:/etc/mysql/my.cnf
-      - ./logs:/var/log/mysql
+      - /etc/localhost:/etc/localhost:ro
+      - $PWD/pypimanager-mysql/data:/var/lib/mysql
+      - $PWD/pypimanager-mysql/conf/my.cnf:/etc/mysql/my.cnf
+      - $PWD/pypimanager-mysql/logs:/var/log/mysql
     environment:
       # 请务必修改密码
       MYSQL_ROOT_PASSWORD: "123456"
+    command: --default-authentication-plugin=mysql_native_password
+    entrypoint: bash -c "chown -R mysql:mysql /var/log/mysql && chmod 1777 /var/log/mysql && exec /entrypoint.sh mysqld"
       
+networks:
+  mysql_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.159.41.0/16      
